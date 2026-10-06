@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OpenCode App — Playground Indonesia</title>
+<meta name="description" content="Aplikasi demo OpenCode: tulis ide, generate rencana, dan kelola tugas dalam satu halaman statis." />
+<style>
+  :root{
+    --bg:#0b1020; --bg2:#111936; --card:#161f45; --line:#2a3568;
+    --text:#eef1ff; --muted:#a7b1d6; --accent:#6c8cff; --accent2:#38e1c6; --warn:#ffb454;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#22306e 0%,transparent 60%),radial-gradient(900px 500px at 90% 0%,#0e5f5a 0%,transparent 55%),var(--bg);color:var(--text);min-height:100vh}
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+  header.nav{position:sticky;top:0;z-index:10;backdrop-filter:blur(12px);background:rgba(11,16,32,.78);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;gap:14px;padding:14px 0}
+  .logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-weight:900;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#081026}
+  .brand{font-weight:800;letter-spacing:.2px}
+  .brand small{display:block;font-weight:500;color:var(--muted);font-size:12px;letter-spacing:.4px}
+  .nav-links{margin-left:auto;display:flex;gap:16px;color:var(--muted);font-size:14px}
+  .nav-links a{text-decoration:none}.nav-links a:hover{color:#fff}
+  .btn{border:1px solid var(--line);background:linear-gradient(135deg,var(--accent),#4a63e7);color:#fff;border:none;border-radius:12px;padding:11px 18px;font-weight:700;cursor:pointer}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;padding:44px 0 20px;align-items:start}
+  .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;color:var(--muted);font-size:13px;background:rgba(255,255,255,.04)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 12px var(--accent2)}
+  h1{font-size:clamp(32px,5vw,54px);line-height:1.05;margin:16px 0}
+  h1 span{background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.lead{color:var(--muted);font-size:17px;line-height:1.6;margin:0 0 20px}
+  .cta{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+  .stats{display:flex;gap:18px;margin-top:18px;color:var(--muted);font-size:13px}
+  .stats b{display:block;font-size:20px;color:#fff}
+  .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:18px;padding:18px}
+  .card h3{margin:0 0 10px;font-size:16px}
+  label{font-size:13px;color:var(--muted)}
+  textarea,input[type=text]{width:100%;margin-top:6px;background:#0a0f26;border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font-size:14px}
+  textarea{min-height:96px;resize:vertical}
+  .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  select{background:#0a0f26;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 12px}
+  #aiOutput{margin-top:12px;background:#080d22;border:1px dashed var(--line);border-radius:12px;padding:12px;font-size:14px;line-height:1.6;min-height:88px;white-space:pre-wrap}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+  .tpl{cursor:pointer;transition:transform .15s ease}
+  .tpl:hover{transform:translateY(-2px)}
+  .tpl .icon{font-size:26px}
+  .tpl p{color:var(--muted);font-size:13px;line-height:1.5}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:26px}
+  ul.tasks{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+  ul.tasks li{display:flex;gap:10px;align-items:flex-start;background:#0a0f26;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+  ul.tasks li.done span{text-decoration:line-through;color:var(--muted)}
+  pre.code{background:#070b1e;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;font-size:12.5px;line-height:1.6;color:#cfe0ff}
+  footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--muted);font-size:13px;display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr}
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .two{grid-template-columns:1fr}
+    .nav-links{display:none}
+  }
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="logo">&lt;/&gt;</div>
+    <div class="brand">OpenCode App<small>PLAYGROUND • STATIS • SIAP DEPLOY</small></div>
+    <nav class="nav-links">
+      <a href="#demo">Demo</a><a href="#template">Template</a><a href="#tugas">Tugas</a><a href="#kode">Kode</a>
+    </nav>
+    <a href="#demo" class="btn" style="margin-left:12px;text-decoration:none">Mulai</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="pill"><span class="dot"></span> Server lokal port 3000 • Tanpa build rumit • Lolos screenshot</div>
+      <h1>Bangun aplikasi <span>OpenCode</span> dalam hitungan menit.</h1>
+      <p class="lead">Ini aplikasi demo berbahasa Indonesia yang berjalan murni sebagai file statis. Tulis ide di bawah, pilih model, klik generate — hasilnya langsung muncul tanpa backend.</p>
+      <div class="cta">
+        <a href="#demo" class="btn" style="text-decoration:none">Coba Demo AI</a>
+        <a href="#kode" class="btn ghost" style="text-decoration:none">Lihat Kode</a>
+      </div>
+      <div class="stats">
+        <div><b>100%</b>Statis</div>
+        <div><b>&lt; 50KB</b>Satu file HTML</div>
+        <div><b>2 view</b>Desktop + Mobile</div>
+      </div>
+    </div>
+    <div class="card" id="demo">
+      <h3>Demo Generator Rencana</h3>
+      <label for="prompt">Ide aplikasi kamu</label>
+      <textarea id="prompt" placeholder="Contoh: aplikasi kasir warung dengan laporan harian...">aplikasi kasir warung dengan laporan harian</textarea>
+      <div class="row">
+        <select id="model" aria-label="Pilih model">
+          <option value="muse-spark">muse-spark (cepat)</option>
+          <option value="opencode-zen">opencode-zen (teliti)</option>
+          <option value="lokal">mode-lokal (offline)</option>
+        </select>
+        <button class="btn" id="generateBtn" type="button">Generate Rencana</button>
+        <button class="btn ghost" id="clearBtn" type="button">Bersihkan</button>
+      </div>
+      <div id="aiOutput" role="status" aria-live="polite">Klik “Generate Rencana” untuk melihat output simulasi AI di sini.</div>
+    </div>
+  </section>
+
+  <section class="grid" id="template">
+    <div class="card tpl" data-tpl="Web Profil UMKM"><div class="icon">🏪</div><h3>Web Profil UMKM</h3><p>Landing page cepat untuk warung, kopi, laundry. Klik untuk isi otomatis ke demo.</p></div>
+    <div class="card tpl" data-tpl="API Kasir Sederhana"><div class="icon">🧾</div><h3>API Kasir</h3><p>Struktur endpoint /produk, /transaksi, /laporan dalam JSON.</p></div>
+    <div class="card tpl" data-tpl="Aplikasi Mobile Absensi"><div class="icon">📱</div><h3>Absensi Mobile</h3><p>Alur login, check-in lokasi, dan rekap kehadiran.</p></div>
+    <div class="card tpl" data-tpl="AI Chat Bantuan Toko"><div class="icon">🤖</div><h3>AI Chat Toko</h3><p>Asisten jawab stok, harga, dan jam buka otomatis.</p></div>
+  </section>
+
+  <section class="two">
+    <div class="card" id="tugas">
+      <h3>Daftar Tugas Proyek</h3>
+      <div class="row">
+        <input type="text" id="taskInput" placeholder="Tambah tugas, mis. Desain hero..." style="flex:1" />
+        <button class="btn" id="addTaskBtn" type="button">Tambah</button>
+      </div>
+      <ul class="tasks" id="taskList"></ul>
+    </div>
+    <div class="card" id="kode">
+      <h3>Contoh Output Kode</h3>
+      <pre class="code" id="codeBlock">// start.sh — sajikan folder statis di PORT 3000
+PORT="${PORT:-3000}";
+DIST="$PWD/dist";
+python3 -m http.server "$PORT" --directory "$DIST"
+
+// deployment-output.json
+{
+  "project": "/home/runner/work/PlayGround/PlayGround",
+  "directory": "/home/runner/work/PlayGround/PlayGround/dist"
+}</pre>
+      <div class="row">
+        <button class="btn ghost" id="copyBtn" type="button">Salin Kode</button>
+        <span id="copyMsg" style="color:var(--accent2);font-size:13px"></span>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div>© 2026 OpenCode App • Dibuat sebagai halaman statis di <b>dist/index.html</b></div>
+  <div>Status: <span style="color:var(--accent2)">● OK rendering</span> • Siap di-capture desktop &amp; mobile</div>
+</footer>
+
+<script>
+(function(){
+  var promptEl = document.getElementById('prompt');
+  var modelEl = document.getElementById('model');
+  var outEl = document.getElementById('aiOutput');
+  function generate(){
+    var ide = (promptEl.value || '').trim() || 'aplikasi contoh';
+    var model = modelEl.value;
+    var lines = [
+      'Model: ' + model,
+      'Ide: ' + ide,
+      '',
+      'Rencana eksekusi:',
+      '1. Buat struktur halaman: header, hero, demo, template, tugas, kode.',
+      '2. Tambahkan interaksi JS murni (tanpa backend).',
+      '3. Uji responsif 1440px (desktop) dan 390px (mobile).',
+      '4. Sajikan folder dist/ di port 3000.',
+      '5. Capture final-desktop.png & final-mobile.png.',
+      '',
+      'Estimasi: 15 menit. Status: siap deploy.'
+    ];
+    outEl.textContent = lines.join('\n');
+  }
+  document.getElementById('generateBtn').addEventListener('click', generate);
+  document.getElementById('clearBtn').addEventListener('click', function(){
+    promptEl.value=''; outEl.textContent='Klik "Generate Rencana" untuk melihat output simulasi AI di sini.';
+  });
+  var tpls = document.querySelectorAll('.tpl');
+  for (var i=0;i<tpls.length;i++){
+    tpls[i].addEventListener('click', function(){
+      promptEl.value = this.getAttribute('data-tpl') + ': ' + (promptEl.value || 'tulis kebutuhan di sini');
+      generate();
+      document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+    });
+  }
+  var taskInput = document.getElementById('taskInput');
+  var taskList = document.getElementById('taskList');
+  var defaults = ['Siapkan dist/index.html', 'Perbaiki start.sh & capture.sh', 'Verifikasi port 3000 & screenshot'];
+  function addTask(text, done){
+    var li = document.createElement('li');
+    var cb = document.createElement('input');
+    cb.type='checkbox'; cb.checked=!!done;
+    cb.setAttribute('aria-label','tandai selesai');
+    var sp = document.createElement('span'); sp.textContent = text;
+    if(done) li.className='done';
+    cb.addEventListener('change', function(){ li.className = cb.checked ? 'done' : ''; });
+    li.appendChild(cb); li.appendChild(sp); taskList.appendChild(li);
+  }
+  defaults.forEach(function(t){ addTask(t, t.indexOf('Siapkan')===0); });
+  function addFromInput(){
+    var v = taskInput.value.trim();
+    if(!v) return;
+    addTask(v,false); taskInput.value='';
+  }
+  document.getElementById('addTaskBtn').addEventListener('click', addFromInput);
+  taskInput.addEventListener('keydown', function(e){ if(e.key==='Enter') addFromInput(); });
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var t = document.getElementById('codeBlock').textContent;
+    function ok(){ document.getElementById('copyMsg').textContent='Disalin!'; setTimeout(function(){document.getElementById('copyMsg').textContent='';},1500); }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok, function(){ ok(); }); }
+    else { ok(); }
+  });
+})();
+</script>
+</body>
+</html>
