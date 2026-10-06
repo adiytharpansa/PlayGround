@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Clipper — Potong Video Jadi Klip Viral</title>
+<meta name="description" content="Clipper: aplikasi pemotong video cepat. Upload, potong, dan simpan klip siap posting ke TikTok, Reels & Shorts." />
+<style>
+:root{
+  --bg:#0a0a12; --bg2:#12121f; --card:#161624; --card2:#1c1c30;
+  --line:rgba(255,255,255,.09); --txt:#f4f4f8; --mut:#a7a7bd;
+  --acc:#7c3aed; --acc2:#06b6d4; --lime:#a3e635; --pink:#ec4899;
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1200px 600px at 20% -10%,#7c3aed33,transparent),radial-gradient(900px 500px at 90% 10%,#06b6d422,transparent),var(--bg);color:var(--txt);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;line-height:1.6}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 20px}
+/* NAV */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(10,10,18,.75);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:-.02em}
+.logo-mark{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--acc),var(--pink) 60%,var(--acc2));display:grid;place-items:center;font-size:19px;box-shadow:0 8px 24px #7c3aed55}
+.links{display:flex;gap:26px;color:var(--mut);font-size:15px}
+.links a:hover{color:#fff}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:#111;border-radius:999px;padding:11px 20px;font-weight:700;font-size:15px;cursor:pointer;transition:.18s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(255,255,255,.18)}
+.btn-dark{background:#ffffff14;color:#fff;border-color:#ffffff22}
+.btn-acc{background:linear-gradient(135deg,#7c3aed,#ec4899);color:#fff;border:0;box-shadow:0 10px 30px #7c3aed55}
+.btn-sm{padding:8px 16px;font-size:14px}
+.badge{display:inline-flex;align-items:center;gap:8px;background:#ffffff10;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;color:#dcdcea}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--lime);box-shadow:0 0 12px var(--lime);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.4}}
+/* HERO */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;padding:58px 0 26px;align-items:center}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.links{display:none}}
+h1{font-size:clamp(36px,5.2vw,62px);line-height:1.02;letter-spacing:-.04em;margin:18px 0 14px}
+h1 span{background:linear-gradient(90deg,#a78bfa,#f472b6,#22d3ee);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mut);font-size:17px;max-width:52ch}
+.cta-row{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.stats{display:flex;gap:28px;margin-top:26px;flex-wrap:wrap}
+.stat b{font-size:22px;display:block}
+.stat span{color:var(--mut);font-size:13px}
+/* APP CARD */
+.app{background:linear-gradient(180deg,#1a1a2e,#11111e);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.app-head{display:flex;align-items:center;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line);background:#ffffff06}
+.traffic{width:12px;height:12px;border-radius:50%}
+.app-head small{margin-left:8px;color:var(--mut)}
+.app-body{padding:18px;display:grid;gap:14px}
+.drop{border:1.6px dashed #ffffff2e;border-radius:var(--r);padding:26px 18px;text-align:center;background:#ffffff06;cursor:pointer;transition:.2s}
+.drop:hover,.drop.over{border-color:var(--acc2);background:#06b6d414}
+.drop input{display:none}
+.drop h3{font-size:17px}
+.drop p{color:var(--mut);font-size:13.5px;margin-top:6px}
+.chip-row{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.chip{font-size:12px;background:#ffffff10;border:1px solid var(--line);padding:5px 11px;border-radius:999px;color:#cfcfe2}
+.player{background:#000;border-radius:14px;overflow:hidden;border:1px solid var(--line);aspect-ratio:16/9;display:grid;place-items:center;position:relative}
+.player video{width:100%;height:100%;object-fit:contain;background:#000;display:none}
+.player-empty{color:#6d6d86;font-size:14px;text-align:center;padding:20px}
+.timeline{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:14px}
+.t-row{display:flex;align-items:center;gap:12px;margin:10px 0}
+.t-row label{font-size:12px;color:var(--mut);min-width:52px}
+.t-row output{font-size:13px;font-variant-numeric:tabular-nums;background:#00000050;border:1px solid var(--line);padding:3px 10px;border-radius:8px;min-width:62px;text-align:center}
+input[type=range]{flex:1;accent-color:#a78bfa;height:26px;cursor:pointer}
+.clip-actions{display:flex;gap:10px;flex-wrap:wrap}
+.clip-actions .btn{flex:1;justify-content:center;min-width:150px}
+.clips{background:#0d0d18;border:1px solid var(--line);border-radius:14px;padding:12px;max-height:210px;overflow:auto}
+.clips h4{font-size:13px;color:var(--mut);margin:2px 4px 10px;letter-spacing:.04em;text-transform:uppercase}
+.clip-item{display:flex;align-items:center;gap:12px;background:#ffffff08;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.clip-item .thumb{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-size:20px;flex-shrink:0}
+.clip-item b{font-size:14px;display:block}
+.clip-item small{color:var(--mut);font-size:12px}
+.clip-item .sp{flex:1}
+.icon-btn{border:1px solid var(--line);background:#ffffff0d;color:#fff;border-radius:9px;padding:7px 11px;cursor:pointer;font-size:13px}
+.icon-btn:hover{background:#ffffff1c}
+/* SECTIONS */
+section.block{padding:44px 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+@media(max-width:800px){.grid3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px}
+.card .ic{font-size:26px;width:48px;height:48px;display:grid;place-items:center;background:#ffffff0d;border:1px solid var(--line);border-radius:14px;margin-bottom:12px}
+.card h3{font-size:17px;margin-bottom:6px}
+.card p{color:var(--mut);font-size:14.5px}
+.sec-kicker{color:#c4b5fd;font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
+.sec-title{font-size:clamp(24px,3.4vw,36px);letter-spacing:-.03em;margin:8px 0}
+.sec-sub{color:var(--mut);max-width:62ch}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+@media(max-width:800px){.steps{grid-template-columns:1fr}}
+.step-num{font-size:13px;font-weight:800;color:#0a0a12;background:var(--lime);display:inline-block;padding:3px 12px;border-radius:999px;margin-bottom:10px}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--mut);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#fff;color:#111;padding:12px 20px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.3s;box-shadow:0 16px 40px rgba(0,0,0,.4);z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<nav>
+  <div class="wrap nav-in">
+    <div class="logo"><div class="logo-mark">✂️</div> Clipper</div>
+    <div class-links links" class="links">
+      <a href="#app">Aplikasi</a><a href="#fitur">Fitur</a><a href="#cara">Cara Kerja</a><a href="#format">Format</a>
+    </div>
+    <div style="display:flex;gap:10px">
+      <a class="btn btn-dark btn-sm" href="#app">Masuk</a>
+      <a class="btn btn-sm" href="#app">Mulai Gratis →</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div>
+      <div class="badge"><span class="dot"></span> v1.0 — Halaman Awal App • 100% berjalan di browser</div>
+      <h1>Potong video jadi <span>klip viral</span> dalam hitungan detik.</h1>
+      <p class="sub">Upload video panjang, geser untuk pilih momen terbaik, simpan sebagai klip vertikal siap posting ke TikTok, Reels, dan Shorts. Tanpa install, tanpa watermark, privasi terjaga.</p>
+      <div class="cta-row">
+        <a class="btn btn-acc" href="#app">✂️ Mulai Memotong</a>
+        <button class="btn btn-dark" id="btnDemo">▶ Lihat Demo</button>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>⚡ &lt; 10 dtk</b><span>rata-rata bikin 1 klip</span></div>
+        <div class="stat"><b>🔒 Privat</b><span>file tidak di-upload ke server</span></div>
+        <div class="stat"><b>📱 9:16 / 1:1 / 16:9</b><span>preset otomatis</span></div>
+      </div>
+    </div>
+
+    <!-- APP / Halaman awal -->
+    <div class="app" id="app">
+      <div class="app-head">
+        <span class="traffic" style="background:#ff5f57"></span>
+        <span class="traffic" style="background:#febc2e"></span>
+        <span class="traffic" style="background:#28c840"></span>
+        <small>clipper.app — editor</small>
+      </div>
+      <div class="app-body">
+        <label class="drop" id="drop">
+          <input type="file" id="file" accept="video/*" />
+          <h3 id="dropTitle">📤 Seret & letakkan video di sini</h3>
+          <p>atau <u>klik untuk pilih file</u> • MP4 / WebM / MOV • maks 500MB</p>
+          <div class="chip-row"><span class="chip">🎬 Podcast 2 jam → Klip 30 dtk</span><span class="chip">🎮 Highlight gaming</span><span class="chip">📚 Kuliah → Rangkuman</span></div>
+        </label>
+
+        <div class="player" id="playerBox">
+          <div class="player-empty" id="playerEmpty">Belum ada video.<br/>Upload dulu untuk mulai memotong ✂️</div>
+          <video id="video" controls playsinline></video>
+        </div>
+
+        <div class="timeline">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+            <b style="font-size:14px">🎚️ Atur potongan</b>
+            <span id="durLabel" style="font-size:12px;color:var(--mut)">durasi: --:--</span>
+          </div>
+          <div class="t-row"><label>Mulai</label><input type="range" id="rStart" min="0" max="100" value="0" step="0.1" /><output id="oStart">0.0 dtk</output></div>
+          <div class="t-row"><label>Selesai</label><input type="range" id="rEnd" min="0" max="100" value="30" step="0.1" /><output id="oEnd">30.0 dtk</output></div>
+          <div class="t-row"><label>Judul</label><input id="clipName" placeholder="cth: momen-lucu-ep12" style="flex:1;background:#0d0d18;border:1px solid var(--line);color:#fff;border-radius:10px;padding:9px 12px;font-size:14px" /></div>
+          <div class="clip-actions">
+            <button class="btn btn-dark" id="btnPreview" type="button">👁️ Pratinjau Klip</button>
+            <button class="btn btn-acc" id="btnClip" type="button">✂️ Potong & Simpan</button>
+          </div>
+        </div>
+
+        <div class="clips"><h4>📁 Klip saya (<span id="clipCount">0</span>)</h4><div id="clipList"><p style="color:var(--mut);font-size:13px;padding:4px">Belum ada klip. Hasil potonganmu muncul di sini.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="fitur">
+    <div class="sec-kicker">Fitur unggulan</div>
+    <div class="sec-title">Semua yang kamu butuhkan untuk nglip cepat</div>
+    <p class="sec-sub">Halaman awal ini fokus ke alur inti: upload → pilih momen → simpan. Tanpa distraksi.</p>
+    <div class="grid3">
+      <div class="card"><div class="ic">⚡</div><h3>Potong super cepat</h3><p>Geser slider start–end, pratinjau loop otomatis. Tidak perlu timeline rumit seperti editor berat.</p></div>
+      <div class="card"><div class="ic">🔒 Privat by design</div><p>Video diproses lokal di browser kamu. Tidak ada upload ke server pada versi awal ini.</p></div>
+      <div class="card"><div class="ic">📱 Preset sosial media</div><p>Satu klik ubah rasio ke 9:16, 1:1, atau 16:9 untuk TikTok, Reels, dan YouTube Shorts.</p></div>
+      <div class="card"><div class="ic">💬 Auto-caption (segera)</div><p>Subtitle otomatis Bahasa Indonesia dengan styling karaoke khas konten viral.</p></div>
+      <div class="card"><div class="ic">🎨 Template viral</div><p>Progress bar, zoom punch-in, dan bingkai hook 3 detik pertama bawaan.</p></div>
+      <div class="card"><div class="ic">☁️ Tanpa watermark</div><p>Ekspor gratis tanpa watermark di halaman awal ini. Upgrade nanti untuk ekspor 4K.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="cara">
+    <div class="sec-kicker">Cara kerja</div>
+    <div class="sec-title">3 langkah jadi klip</div>
+    <div class="steps">
+      <div class="card"><span class="step-num">LANGKAH 1</span><h3>📤 Upload video</h3><p>Seret file MP4/WebM/MOV ke kotak editor di atas. Bisa video podcast 2 jam sekalipun.</p></div>
+      <div class="card"><span class="step-num">LANGKAH 2</span><h3>🎚️ Pilih momen</h3><p>Geser <i>Mulai</i> & <i>Selesai</i>, tekan Pratinjau untuk muter loop bagian itu saja.</p></div>
+      <div class="card"><span class="step-num">LANGKAH 3</span><h3>✂️ Simpan klip</h3><p>Klik Potong & Simpan. Klip tercatat di daftar dan bisa diputar ulang / diunduh metadatanya.</p></div>
+    </div>
+  </section>
+
+  <section class="block" id="format">
+    <div class="card" style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;justify-content:space-between;background:linear-gradient(135deg,#1e1b4b,#83184333);">
+      <div><div class="sec-kicker">Siap ekspor</div><div class="sec-title" style="margin:4px 0">Mau lanjut ke halaman Ekspor & AI Caption?</div><p class="sec-sub">Halaman awal (App) ini sudah jadi fondasi. Berikutnya kita bisa bangun: halaman daftar proyek, editor presisi frame, dan ekspor MP4 asli.</p></div>
+      <a class="btn" href="#app">Lanjut ke Editor →</a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap foot"><span>✂️ <b style="color:#fff">Clipper</b> — dibuat dengan ♥ di Indonesia</span><span>Halaman Awal • App v1.0 • <a href="#app" style="text-decoration:underline">Kembali ke atas</a></span></div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const file=$('file'), drop=$('drop'), video=$('video'),
+  rStart=$('rStart'), rEnd=$('rEnd'), oStart=$('oStart'), oEnd=$('oEnd'),
+  durLabel=$('durLabel'), clipName=$('clipName'),
+  clipList=$('clipList'), clipCount=$('clipCount'),
+  playerEmpty=$('playerEmpty'), toast=$('toast');
+let clips = []; let previewTimer=null;
+
+function showToast(msg){ toast.textContent=msg; toast.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toast.classList.remove('show'),2600); }
+function fmt(s){ if(!isFinite(s)) return '--:--'; s=Math.max(0,s); const m=Math.floor(s/60), ss=(s%60); return m+':'+ss.toFixed(1).padStart(4,'0'); }
+
+function syncLabels(){
+  let a=parseFloat(rStart.value), b=parseFloat(rEnd.value);
+  if(a>b){ const t=a; a=b; b=t; }
+  oStart.textContent=a.toFixed(1)+' dtk'; oEnd.textContent=b.toFixed(1)+' dtk';
+  return [a,b];
+}
+function loadFile(f){
+  if(!f) return;
+  if(!f.type.startsWith('video/')){ showToast('❌ File harus video'); return; }
+  const url=URL.createObjectURL(f);
+  video.src=url; video.style.display='block'; playerEmpty.style.display='none';
+  $('dropTitle').textContent='✅ '+f.name;
+  video.onloadedmetadata=()=>{ const d=video.duration||100; rStart.max=d; rEnd.max=d; rStart.value=0; rEnd.value=Math.min(30,d); durLabel.textContent='durasi: '+fmt(d); syncLabels(); showToast('🎬 Video dimuat — geser untuk memotong'); };
+}
+drop.addEventListener('click',()=>file.click());
+file.addEventListener('change',e=>loadFile(e.target.files[0]));
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over');}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over');}));
+drop.addEventListener('drop',e=>{ const f=e.dataTransfer.files && e.dataTransfer.files[0]; loadFile(f); });
+[rStart,rEnd].forEach(r=>r.addEventListener('input',syncLabels));
+
+$('btnPreview').addEventListener('click',()=>{
+  if(!video.src){ showToast('Upload video dulu ya 📤'); return; }
+  const [a,b]=syncLabels(); if(b-a<0.3){ showToast('Rentang terlalu pendek'); return; }
+  clearInterval(previewTimer); video.currentTime=a; video.play();
+  previewTimer=setInterval(()=>{ if(video.currentTime>=b){ video.currentTime=a; } },150);
+  showToast('👁️ Pratinjau '+fmt(a)+' → '+fmt(b)+' (loop)');
+});
+video.addEventListener('pause',()=>clearInterval(previewTimer));
+
+$('btnClip').addEventListener('click',()=>{
+  if(!video.src){ showToast('Upload video dulu ya 📤'); return; }
+  const [a,b]=syncLabels(); if(b-a<0.3){ showToast('Rentang terlalu pendek'); return; }
+  const name=(clipName.value||('klip-'+(clips.length+1))).trim();
+  clips.unshift({name, start:a, end:b, at:new Date().toLocaleTimeString('id-ID')});
+  renderClips(); clipName.value='';
+  showToast('✂️ Klip "'+name+'" tersimpan ('+(b-a).toFixed(1)+' dtk)');
+});
+function renderClips(){
+  clipCount.textContent=clips.length;
+  if(!clips.length){ clipList.innerHTML='<p style="color:var(--mut);font-size:13px;padding:4px">Belum ada klip. Hasil potonganmu muncul di sini.</p>'; return; }
+  clipList.innerHTML='';
+  clips.forEach((c,i)=>{
+    const d=document.createElement('div'); d.className='clip-item';
+    d.innerHTML='<div class="thumb">🎬</div><div class="sp"><b></b><small></small></div>';
+    d.querySelector('b').textContent=c.name;
+    d.querySelector('small').textContent=fmt(c.start)+' → '+fmt(c.end)+' • '+(c.end-c.start).toFixed(1)+' dtk • '+c.at;
+    const b1=document.createElement('button'); b1.className='icon-btn'; b1.textContent='▶ Putar';
+    b1.onclick=()=>{ const [a,b]=[c.start,c.end]; clearInterval(previewTimer); video.currentTime=a; video.play(); previewTimer=setInterval(()=>{ if(video.currentTime>=b) video.currentTime=a; },150); video.scrollIntoView({behavior:'smooth',block:'center'}); };
+    const b2=document.createElement('button'); b2.className='icon-btn'; b2.textContent='🗑️';
+    b2.onclick=()=>{ clips.splice(i,1); renderClips(); };
+    d.appendChild(b1); d.appendChild(b2); clipList.appendChild(d);
+  });
+}
+$('btnDemo').addEventListener('click',()=>{
+  document.getElementById('app').scrollIntoView({behavior:'smooth'});
+  showToast('👋 Ini demo lokal — upload video untuk coba slider & potong');
+  if(!video.src){ rStart.max=120; rEnd.max=120; rStart.value=12.5; rEnd.value=42; durLabel.textContent='durasi: 2:00.0 (contoh)'; syncLabels(); }
+});
+syncLabels(); renderClips();
+</script>
+</body>
+</html>
