@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0b1a">
+<title>Kumo – Nonton Anime</title>
+<style>
+:root{--bg:#f6f4fb;--sf:#fff;--sf2:#ece8f8;--tx:#16132e;--mu:#6a6590;--ln:#e0daf2;--ac:#f0457a;--ac2:#6c4ff0;--gr:linear-gradient(135deg,#f0457a,#8b5cf6);--glass:rgba(255,255,255,.72);--sh:0 10px 30px -12px rgba(60,40,140,.28);--sh2:0 24px 60px -20px rgba(60,40,140,.35)}
+@media(prefers-color-scheme:dark){:root{--bg:#0d0b1a;--sf:#181430;--sf2:#241f46;--tx:#f4f1ff;--mu:#a49fca;--ln:#2e2858;--ac:#ff5c8a;--ac2:#9b86ff;--glass:rgba(24,20,48,.72)}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Plus Jakarta Sans",sans-serif;font-size:15px;max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:110px}
+.top{position:sticky;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;padding:12px 18px;background:var(--glass);backdrop-filter:blur(18px)}
+.logo{font-weight:800;font-size:24px;letter-spacing:-.8px}.logo i{font-style:normal;color:var(--ac)}
+.ib{width:40px;height:40px;border-radius:50%;background:var(--sf);border:1px solid var(--ln);display:grid;place-items:center;font:inherit;cursor:pointer}
+.hero{margin:0;min-height:min(86svh,640px);padding:96px 20px 22px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;text-align:center;color:#fff;position:relative;overflow:hidden;background:linear-gradient(135deg,#f0457a,#6c4ff0,#241f46)}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.35),transparent 35%,rgba(0,0,0,.85))}
+.hero>*{position:relative;z-index:1}
+.hero h1{font-size:42px;letter-spacing:-1.5px;line-height:.98;margin-bottom:12px;text-shadow:0 4px 24px rgba(0,0,0,.55)}
+.bgs{display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap}
+.bgs span{font-size:13px;font-weight:700;padding:3px 10px;border-radius:7px;background:rgba(255,255,255,.26);color:#fff}
+.hmeta{display:flex;gap:12px;justify-content:center;font-size:14px;color:rgba(255,255,255,.88);margin-bottom:6px;flex-wrap:wrap}
+.hgen{font-size:14px;color:rgba(255,255,255,.88);margin-bottom:20px}
+.hact{display:flex;align-items:center;gap:6px;width:100%;max-width:480px}
+.btn{padding:13px 22px;border-radius:99px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;cursor:pointer;flex:1}
+.pri{background:#fff;color:#16132e}.sec{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.22);color:#fff;flex:0 0 62px}
+.seg{display:flex;gap:6px;margin:14px auto 0;max-width:180px;width:100%}.seg i{flex:1;height:4px;border-radius:9px;background:rgba(255,255,255,.35)}
+.seg i.on{background:#fff}
+h2{font-size:22px;font-weight:800;letter-spacing:-.6px;padding:0 18px;margin:28px 0 14px}
+.sc{display:flex;gap:14px;overflow-x:auto;padding:4px 18px 14px;scrollbar-width:none}.sc::-webkit-scrollbar{display:none}
+.sc>.c{flex:0 0 132px}
+.poster{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:2/3;display:flex;align-items:flex-end;padding:10px;text-align:left;width:100%;box-shadow:var(--sh);border:0;cursor:pointer;color:#fff;font:inherit;transition:transform .2s}
+.poster b{font-size:14px;line-height:1.15;position:relative;z-index:1;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.poster:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 40%,rgba(0,0,0,.75))}
+.tag{position:absolute;top:8px;left:8px;z-index:1;background:var(--gr);color:#fff;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px}
+.rt{position:absolute;top:8px;right:8px;z-index:1;background:rgba(0,0,0,.5);font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;color:#fff}
+.c .t{font-size:13px;margin-top:8px;font-weight:700;line-height:1.25}.sub{color:var(--mu);font-size:12px;font-weight:500;display:block;margin-top:2px}
+.cw{flex:0 0 232px}.cw .th{aspect-ratio:16/9;border-radius:16px;position:relative;width:100%;display:block;border:0;cursor:pointer;box-shadow:var(--sh);color:#fff;font-size:28px}
+.bar{height:5px;background:var(--sf2);border-radius:9px;margin-top:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gr);border-radius:9px}
+.cw small{color:var(--mu);font-size:12px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;padding:0 18px}
+.chip{padding:9px 16px;border-radius:99px;background:var(--sf);border:1px solid var(--ln);font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer;color:inherit}
+.chip.on{background:var(--gr);border-color:transparent;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:0 18px}
+.srch{margin:10px 18px 0;display:block}.srch input{width:100%;padding:15px 20px 15px 48px;border-radius:99px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);font:inherit;font-size:16px}
+.empty{padding:44px 30px;text-align:center;color:var(--mu);font-size:15px;margin:0 18px;border:1.5px dashed var(--ln);border-radius:20px}
+.ep{display:flex;gap:14px;align-items:center;margin:0 18px 12px;background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:10px;width:calc(100% - 36px);text-align:left;cursor:pointer;font:inherit;color:inherit}
+.ep .th{flex:0 0 100px;aspect-ratio:16/10;border-radius:12px}
+.ep b{display:block;font-size:15px}.ep span{font-size:12px;color:var(--mu)}
+nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:560px;background:var(--glass);backdrop-filter:blur(22px);border-top:1px solid var(--ln);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));z-index:5}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--mu);padding:6px 2px;border:0;background:none;cursor:pointer;min-height:52px;justify-content:center}
+nav button span{padding:5px 20px;border-radius:99px}
+nav .on{color:var(--ac)}nav .on span{background:rgba(240,69,122,.16)}
+.sheet{position:fixed;inset:0;z-index:10;background:rgba(8,5,24,.65);display:none;align-items:flex-end;justify-content:center}
+.sheet.open{display:flex}
+.pn{background:var(--bg);width:100%;max-width:560px;max-height:92%;overflow-y:auto;border-radius:28px 28px 0 0;padding-bottom:24px}
+.ph{height:230px;position:relative;display:flex;align-items:flex-end;padding:18px;color:#fff;overflow:hidden;background:linear-gradient(135deg,#ff5c8a,#8b6cff)}
+.ph:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,var(--bg))}
+.ph h3{font-size:30px;position:relative;z-index:1;color:var(--tx)}
+.x{position:absolute;top:14px;right:14px;width:36px;height:36px;border-radius:50%;background:rgba(0,0,0,.4);color:#fff;z-index:2;border:0;cursor:pointer}
+.bd{padding:6px 18px 16px}.bd p{font-size:14.5px;line-height:1.6;color:var(--mu);margin:12px 0 18px}
+.stt{display:flex;gap:10px}.stt div{flex:1;background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:12px 8px;text-align:center}.stt b{display:block;font-size:18px}.stt span{font-size:12px;color:var(--mu)}
+.epl{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--ln);width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;cursor:pointer;text-align:left}
+.epl .th{flex:0 0 104px;aspect-ratio:16/10;border-radius:12px}
+.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:11px 20px;border-radius:99px;font-size:14px;font-weight:600;z-index:40;display:none}
+@media(min-width:760px){body{max-width:1120px}nav{max-width:520px;bottom:14px;border-radius:26px;border-width:1px}.grid{grid-template-columns:repeat(6,1fr)}.hero h1{font-size:64px}}
+</style>
+</head>
+<body>
+<div class="top" id="top"><div class="logo">kumo<i>.</i></div><button class="ib" data-t="profil" aria-label="Profil">K</button></div>
+<main id="v"></main>
+<nav id="nav"></nav>
+<div class="sheet" id="sh"><div class="pn" id="pn" role="dialog" aria-modal="true" aria-label="Detail anime"></div></div>
+<div class="toast" id="ts"></div>
+<script>
+const A=[["Langit Terakhir","Aksi, Petualangan",8.7,"Tayang",64,"Seorang kurir awan mencari pulau terakhir yang masih melayang di atas lautan badai.",268],["Detektif Senja","Misteri, Drama",8.4,"Tayang",120,"Detektif SMA memecahkan kasus aneh yang selalu terjadi saat matahari terbenam.",340],["Re: Zona Nol","Fantasi, Thriller",8.9,"Tamat",50,"Setiap kali gagal, dunia mengulang dari awal. Hanya dia yang ingat semuanya.",175],["Bintang Berpacu","Olahraga, Aksi",8.1,"Tayang",24,"Balapan lintas benua dengan hadiah satu permintaan apa pun.",160],["Penyihir Hitam","Fantasi, Aksi",8.3,"Tayang",170,"Anak tanpa sihir bersumpah menjadi raja penyihir bersama sahabatnya.",150],["Naga Biru","Aksi, Fantasi",7.9,"Baru",12,"Seorang pemburu bertemu naga yang takut ketinggian.",24],["Kafe Pukul Tiga","Komedi, Slice of Life",8.0,"Tayang",36,"Kafe kecil yang hanya buka tengah malam.",24],["Sekolah Gema","Romantis, Drama",7.8,"Tamat",13,"Dua siswa saling berkirim catatan lewat loker kosong.",13],["Kapal Kertas","Petualangan, Komedi",8.5,"Tayang",90,"Kru kapal kertas menyeberangi samudra sebelum hujan turun.",48],["Mesin Hati","Sci-Fi, Drama",8.6,"Baru",12,"Robot perbaikan belajar apa artinya merindukan seseorang.",12],["Pedang Sunyi","Aksi, Sejarah",8.2,"Tamat",26,"Ronin tanpa suara menjaga desa dari bayangan masa lalu.",26],["Dapur Dewa","Komedi, Kuliner",7.7,"Tayang",30,"Koki muda menantang para dewa memasak di dapur surga.",30]].map((a,i)=>({id:i,t:a[0],g:a[1].split(", "),r:a[2],s:a[3],e:a[4],d:a[5],h:(i*47+330)%360}));
+const grad=a=>`linear-gradient(135deg,hsl(${a.h} 70% 55%),hsl(${(a.h+40)%360} 65% 35%))`;
+const $=s=>document.querySelector(s);
+const toast=m=>{const t=$("#ts");t.textContent=m;t.style.display="block";clearTimeout(toast.i);toast.i=setTimeout(()=>t.style.display="none",1800)};
+let tab="home",hi=0,gf=null,q="",list=new Set(JSON.parse(localStorage.getItem("kumo")||"[]"));
+const save=()=>{try{localStorage.setItem("kumo",JSON.stringify([...list]))}catch(e){}};
+const card=a=>`<div class="c"><button class="poster" style="background:${grad(a)}" data-o="${a.id}">${a.s==="Baru"?'<span class="tag">Baru</span>':""}<span class="rt">★ ${a.r}</span><b>${a.t}</b></button><div class="t">${a.t}<span class="sub">★ ${a.r} · ${a.g[0]}</span></div></div>`;
+const gridOf=l=>l.length?`<div class="grid">${l.map(card).join("")}</div>`:`<div class="empty">Tidak ada hasil.</div>`;
+const tabs=[["home","⌂","Beranda"],["genre","▦","Genre"],["latest","▶","Terbaru"],["search","⌕","Cari"],["list","♡","Daftarku"]];
+function hero(){const n=A.filter(a=>a.s==="Baru");const a=[...n,...[...A].sort((x,y)=>y.r-x.r).filter(x=>!n.includes(x))].slice(0,3)[hi % 3];return `<section class="hero"><h1>${a.t}</h1><div class="bgs"><span>TV</span><span>★ ${a.r}</span><span>${a.s}</span></div><div class="hmeta"><span>2024</span><span>24 mnt</span><span>${a.e} Episode</span></div><div class="hgen">${a.g.join(", ")}</div><div class="hact"><button class="btn pri" data-o="${a.id}">▶ Tonton</button><button class="btn sec" data-l="${a.id}">${list.has(a.id)?"♥":"♡"}</button></div></section><div class="seg">${[0,1,2].map(i=>`<i class="${i===(hi%3)?"on":""}"></i>`).join("")}</div>`}
+function home(){return hero()+`<h2>Lanjutkan menonton</h2><div class="sc">${A.slice(0,4).map(a=>`<div class="cw"><button class="th" style="background:${grad(a)}" data-o="${a.id}" aria-label="Putar ${a.t}">▶</button><div style="font-weight:700;margin-top:8px">${a.t}</div><small>Episode ${Math.min(5,a.e)} · sisa 12 mnt</small><div class="bar"><i style="width:60%"></i></div></div>`).join("")}</div><h2>Baru rilis</h2><div class="sc">${A.filter(a=>a.s==="Baru").map(card).join("")}</div><h2>Spotlight</h2><div class="sc">${[...A].sort((x,y)=>y.r-x.r).slice(0,8).map(card).join("")}</div><h2>Top 10 minggu ini</h2><div class="sc">${[...A].sort((x,y)=>y.r-x.r).slice(0,10).map((a,i)=>`<div style="display:flex;align-items:flex-end;flex:none"><span style="font-size:72px;font-weight:800;color:transparent;-webkit-text-stroke:2px #6c4ff0;margin-right:-12px;line-height:.8">${i+1}</span>${card(a)}</div>`).join("")}</div>`}
+function genre(){const G=[...new Set(A.flatMap(a=>a.g))].sort();let l=A.filter(a=>!gf||a.g.includes(gf));return `<h2>Genre</h2><div class="chips">${G.map(g=>`<button class="chip ${g===gf?"on":""}" data-g="${g}">${g}</button>`).join("")}</div><h2>${l.length} anime</h2>${gridOf(l)}`}
+function latest(){return `<h2>Episode terbaru</h2>${[...A].sort((x,y)=>y.e-x.e).slice(0,6).map(a=>`<button class="ep" data-o="${a.id}"><div class="th" style="background:${grad(a)}"></div><div><b>${a.t}</b><span>Episode ${a.e}</span></div></button>`).join("")}`}
+function search(){const l=A.filter(a=>(a.t+a.g.join()).toLowerCase().includes(q.toLowerCase()));return `<label class="srch"><input id="qi" type="search" placeholder="Cari judul atau genre" value="${q}"></label><h2>${q?"Hasil":"Semua anime"}</h2>${gridOf(l)}`}
+function mylist(){const l=A.filter(a=>list.has(a.id));return `<h2>Daftarku (${l.length})</h2>${l.length?gridOf(l):'<div class="empty">Belum ada anime di daftar. Ketuk ♡ pada anime.</div>'}`}
+function profil(){return `<h2>Profil</h2><div class="stt" style="margin:0 18px"><div><b>${list.size}</b><span>Daftarku</span></div><div><b>${A.length}</b><span>Anime</span></div><div><b>12</b><span>Episode</span></div></div><h2>Pengaturan</h2><div class="chips"><button class="chip" data-t="home">Beranda</button><button class="chip" data-hc="1">Hapus riwayat</button></div>`}
+const V={home,genre,latest,search,list:mylist,profil};
+function render(){$("#v").innerHTML=V[tab]();$("#nav").innerHTML=tabs.map(t=>`<button class="${t[0]===tab?"on":""}" data-t="${t[0]}"><span>${t[1]}</span>${t[2]}</button>`).join("");const qi=$("#qi");if(qi){qi.oninput=e=>{q=e.target.value;const p=e.target.selectionStart;render();const n=$("#qi");n.focus();n.setSelectionRange(p,p)}}}
+function open(id){const a=A[id];$("#pn").innerHTML=`<div class="ph"><button class="x" data-c aria-label="Tutup">✕</button><h3>${a.t}</h3></div><div class="bd"><div class="stt"><div><b>★ ${a.r}</b><span>Rating</span></div><div><b>${a.e}</b><span>Episode</span></div><div><b>${a.s}</b><span>Status</span></div></div><p>${a.d}</p><div style="display:flex;gap:10px"><button class="btn pri" data-w="${a.id}" style="background:linear-gradient(135deg,#f0457a,#8b5cf6);color:#fff">▶ Tonton</button><button class="btn" data-l="${a.id}" style="background:var(--sf);border:1.5px solid var(--ln);flex:0 0 auto">${list.has(a.id)?"♥ Di daftar":"♡ Daftarku"}</button></div><h2 style="padding:0;margin:20px 0 8px">Episode</h2>${Array.from({length:Math.min(a.e,8)},(_,i)=>`<button class="epl" data-w="${a.id}"><div class="th" style="background:${grad(a)}"></div><div><b>Episode ${a.e-i}</b><br><span style="color:var(--mu);font-size:13px">24 mnt</span></div></button>`).join("")}</div>`;$("#sh").classList.add("open")}
+document.addEventListener("click",e=>{const b=e.target.closest("button,.sheet");if(!b)return;const d=b.dataset;if(d.t){tab=d.t;scrollTo(0,0);render()}else if(d.g!==undefined){gf=gf===d.g?null:d.g;render()}else if(d.o!==undefined){open(+d.o)}else if(d.l!==undefined){const i=+d.l;list.has(i)?(list.delete(i),toast("Dihapus dari Daftarku")):(list.add(i),toast("Ditambahkan ke Daftarku"));save();render();if($("#sh").classList.contains("open"))open(i)}else if(d.w!==undefined){toast("Memutar Episode 1 — pratinjau tanpa video")}else if(d.c!==undefined||b.id==="sh"&&e.target.id==="sh"){$("#sh").classList.remove("open")}else if(d.hc){list.clear();save();render();toast("Daftar dihapus")} });
+setInterval(()=>{if(tab==="home"){hi=(hi+1)%3;const h=$(".hero"),g=$(".seg");if(h){const tmp=document.createElement("div");tmp.innerHTML=hero();h.replaceWith(tmp.querySelector(".hero"));g.replaceWith(tmp.querySelector(".seg"))}}},6000);
+render();
+</script>
+</body>
+</html>
