@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Web Terminal — Jalankan Perintah di Browser</title>
+<style>
+  :root { color-scheme: dark; --bg:#0b1020; --panel:#111a33; --green:#4ade80; --dim:#94a3b8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-monospace, Menlo, Consolas, monospace; background: radial-gradient(1200px 600px at 20% -10%, #1e2a5a, transparent), var(--bg); color:#e2e8f0; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 40px; }
+  header { max-width:860px; width:100%; text-align:center; margin-bottom:16px; }
+  header h1 { margin:0 0 8px; font-size: clamp(22px, 4vw, 34px); }
+  header p { margin:0; color: var(--dim); }
+  .badge { display:inline-block; font-size:12px; border:1px solid #334155; border-radius:999px; padding:4px 10px; margin-bottom:10px; color:var(--green); }
+  #term-wrap { max-width:860px; width:100%; background:var(--panel); border:1px solid #26355c; border-radius:14px; overflow:hidden; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  #term-bar { display:flex; gap:8px; align-items:center; padding:10px 14px; background:#0d152c; border-bottom:1px solid #26355c; }
+  .dot { width:12px; height:12px; border-radius:50%; }
+  #term { height:min(52vh,480px); overflow-y:auto; padding:16px; font-size:15px; line-height:1.6; }
+  #term .out { white-space:pre-wrap; word-break:break-word; }
+  #term .cmd { color:var(--green); }
+  #term .dim { color:var(--dim); }
+  #input-row { display:flex; align-items:center; gap:8px; border-top:1px solid #26355c; padding:12px 14px; background:#0d152c; }
+  #prompt { color:var(--green); white-space:nowrap; }
+  #cmd { flex:1; background:transparent; border:0; outline:0; color:#fff; font:inherit; }
+  #quick { max-width:860px; width:100%; display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+  #quick button { font:inherit; font-size:13px; background:#16224a; color:#e2e8f0; border:1px solid #2b3d6e; border-radius:999px; padding:8px 12px; cursor:pointer; }
+  #quick button:hover { background:#1e2d63; }
+  footer { margin-top:16px; color:var(--dim); font-size:13px; text-align:center; max-width:860px; }
+</style>
+</head>
+<body>
+<header>
+  <span class="badge">● YA — terminal berjalan di browser</span>
+  <h1>Apakah kamu bisa menjalankan perintah terminal?</h1>
+  <p>Ya! Ketik perintah di bawah — semua berjalan lokal di halaman ini. Coba <code>help</code>.</p>
+</header>
+<div id="term-wrap">
+  <div id="term-bar"><span class="dot" style="background:#f87171"></span><span class="dot" style="background:#fbbf24"></span><span class="dot" style="background:#4ade80"></span><span style="margin-left:8px;color:#94a3b8;font-size:13px">web-terminal — bash (simulasi)</span></div>
+  <div id="term" aria-live="polite"></div>
+  <form id="input-row">
+    <span id="prompt">user@web:~$</span>
+    <input id="cmd" autocomplete="off" spellcheck="false" placeholder="ketik help lalu Enter…" aria-label="terminal input" />
+  </form>
+</div>
+<div id="quick">
+  <button data-c="help">help</button>
+  <button data-c="ls">ls</button>
+  <button data-c="echo Halo dunia!">echo Halo dunia!</button>
+  <button data-c="date">date</button>
+  <button data-c="whoami">whoami</button>
+  <button data-c="neofetch">neofetch</button>
+  <button data-c="clear">clear</button>
+</div>
+<footer>Simulasi terminal sisi klien — aman untuk demo. Tidak ada perintah yang dikirim ke server.</footer>
+<script>
+const term = document.getElementById('term');
+const form = document.getElementById('input-row');
+const input = document.getElementById('cmd');
+const files = { 'README.md':'Demo terminal web.\nKetik help untuk daftar perintah.', 'index.html':'<h1>terminal</h1>', 'catatan.txt':'Halo dari terminal web!' };
+function print(html, cls='out'){ const d=document.createElement('div'); d.className=cls; d.innerHTML=html; term.appendChild(d); term.scrollTop=term.scrollHeight; return d; }
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function run(raw){
+  const line = raw.trim();
+  print('<span class="cmd">user@web:~$</span> ' + esc(raw || ''));
+  if(!line) return;
+  const [c, ...rest] = line.split(/\s+/);
+  const arg = rest.join(' ');
+  switch(c){
+    case 'help': print('Perintah tersedia:\n  help — daftar ini\n  echo &lt;teks&gt; — cetak teks\n  ls — daftar file\n  cat &lt;file&gt; — lihat isi file\n  date — tanggal/waktu\n  whoami — siapa kamu\n  pwd — direktori aktif\n  uname — info sistem\n  neofetch — info demo\n  clear — bersihkan layar'); break;
+    case 'echo': print(esc(arg)); break;
+    case 'ls': print(Object.keys(files).join('   ')); break;
+    case 'cat': print(files[rest[0]] ? esc(files[rest[0]]) : `cat: ${esc(rest[0]||'')} : file tidak ditemukan`); break;
+    case 'date': print(new Date().toString()); break;
+    case 'whoami': print('pengunjung'); break;
+    case 'pwd': print('/home/web'); break;
+    case 'uname': print('WebOS browser-x86_64 JavaScript'); break;
+    case 'neofetch': print('OS: Web Terminal 1.0\nShell: web-sh\nResolusi: ' + innerWidth + 'x' + innerHeight + '\nUptime: sejak halaman dibuka'); break;
+    case 'clear': term.innerHTML=''; break;
+    case 'sudo': print('Nice try — kamu sudah root di hatiku.'); break;
+    default: print(`perintah tidak ditemukan: ${esc(c)} — coba: help`);
+  }
+}
+form.addEventListener('submit', e => { e.preventDefault(); run(input.value); input.value=''; input.focus(); });
+document.querySelectorAll('#quick button').forEach(b => b.addEventListener('click', () => { run(b.dataset.c); input.focus(); }));
+print('<span class="dim">Selamat datang di Web Terminal! Jawaban singkat: YA.</span>');
+print('<span class="dim">Ketik <b>help</b> untuk mulai. Contoh: <b>echo Halo</b>, <b>ls</b>, <b>date</b></span>');
+input.focus();
+</script>
+</body>
+</html>
